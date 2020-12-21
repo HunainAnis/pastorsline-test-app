@@ -18,9 +18,9 @@ const rootReducer = (state=INITIAL_STATE, action)=>{
         case actions.SET_ALL_CONTACTS:
             return {...state, allContacts:{...action.payload.data}}
         case actions.FETCH_US:
-            return {...state, usContacts:{...state.usContacts, contacts:[...state.usContacts.contacts, ...action.payload.data.contacts]}}
+            return {...state, UScontacts:{...state.UScontacts, contacts:{...state.UScontacts.contacts, ...action.payload.contacts}}}
         case actions.FETCH_ALL:
-            return {...state, allContacts:{...state.allContacts, ...action.payload.data}}
+            return {...state, allContacts:{...state.allContacts, contacts:{...state.allContacts.contacts, ...action.payload.contacts}}}
         default:
             return state
     }
