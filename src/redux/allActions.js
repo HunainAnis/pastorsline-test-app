@@ -1,0 +1,5 @@
+export const SET_LOADING = "SET_LOADING"
+export const SET_US_CONTACTS = "SET_US_CONTACTS"
+export const SET_ALL_CONTACTS = "SET_ALL_CONTACTS"
+export const FETCH_US = "FETCH_US"
+export const FETCH_ALL = "FETCH_ALL"
