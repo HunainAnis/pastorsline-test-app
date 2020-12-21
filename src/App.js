@@ -22,15 +22,31 @@ function App(props) {
   console.log(props)
   return (
     <Router>
-      <Switch>
-        <Route path="/ModalA">
-          <ModalComponent {...props} type="A" data={props.allContacts} search={(US, text)=>props.searchResult(US, text)} show={modalA} fetchMore={(US, page)=>props.fetchMoreData(US, page)} toggle={setModalA} />
-        </Route>
-        <Route path="/ModalB">
-          <ModalComponent {...props} type="B" data={props.UScontacts} search={(US, text)=>props.searchResult(US, text)} show={modalB} fetchMore={(US, page)=>props.fetchMoreData(US, page)} toggle={setModalB} />
-        </Route>
-      </Switch>
-        <Home />
+        <Switch>
+          <Route path="/ModalA">
+            <ModalComponent 
+              {...props} 
+              type="A" 
+              data={props.allContacts} 
+              search={(US, text)=>props.searchResult(US, text)} 
+              show={modalA} 
+              fetchMore={(page)=>props.fetchMoreDataAll(page)} 
+              toggle={setModalA}
+             />
+          </Route>
+          <Route path="/ModalB">
+            <ModalComponent 
+              {...props} 
+              type="B" 
+              data={props.UScontacts} 
+              search={(US, text)=>props.searchResult(US, text)} 
+              show={modalB} 
+              fetchMore={(page)=>props.fetchMoreDataUS(page)} 
+              toggle={setModalB}
+             />
+          </Route>
+        </Switch>
+          <Home />
     </Router>
   );
 }
@@ -44,7 +60,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchUSData: ()=>dispatch(actions.fetchUSContacts()),
     fetchAllData: ()=>dispatch(actions.fetchAllContacts()),
-    fetchMoreData:(US, page)=>dispatch(actions.fetchMoreData(US, page)),
+    fetchMoreDataUS:(page)=>dispatch(actions.fetchMoreDataUS(page)),
+    fetchMoreDataAll:(page)=>dispatch(actions.fetchMoreDataAll(page)),
     searchResult:(US, text)=>dispatch(actions.searchQuery(US, text))
   }
 }

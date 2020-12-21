@@ -10,7 +10,6 @@ export const setLoading = (loading) => {
     }
 }
 export const setContacts = (US, data) => {
-    console.log('redux data', data)
     return {
         type : US ? actions.SET_US_CONTACTS:actions.SET_ALL_CONTACTS,
         payload : {
@@ -18,10 +17,17 @@ export const setContacts = (US, data) => {
         }
     }
 }
-export const fetchContacts = (US, data) => {
-    console.log('redux data', data)
+export const fetchContactsUS = (data) => {
     return {
-        type : US ? actions.FETCH_US:actions.FETCH_ALL,
+        type :actions.FETCH_US,
+        payload : {
+            data
+        }
+    }
+}
+export const fetchContactsAll = (data) => {
+    return {
+        type :actions.FETCH_ALL,
         payload : {
             data
         }
@@ -30,7 +36,9 @@ export const fetchContacts = (US, data) => {
 
 export const fetchUSContacts = () => {
     let response = []
+    
     return (dispatch=>{
+        dispatch(setLoading(true))
         Axios.get("https://api.dev.pastorsline.com/api/contacts.json",
         {
           headers: {
@@ -51,6 +59,7 @@ export const fetchUSContacts = () => {
         .catch((err)=>{
             console.log("USA data fetching error", err)
         })
+        dispatch(setLoading(false))
         console.log(response)
     })
 }
@@ -65,7 +74,7 @@ export const fetchAllContacts = () => {
           },
           params:{
             companyId:171,
-            page:3
+            page:1
           }
         })
         .then(async (resp)=>{
@@ -75,7 +84,7 @@ export const fetchAllContacts = () => {
             }
         })
         .catch((err)=>{
-            console.log("USA data fetching error", err)
+            console.log("All data fetching error", err)
         })
         console.log(response)
     })
@@ -102,13 +111,13 @@ export const searchQuery = (US, text) => {
             }
         })
         .catch((err)=>{
-            console.log("USA data fetching error", err)
+            console.log("Search data fetching error", err)
         })
         console.log(response)
     })
 }
 
-export const fetchMoreData = (US, page) => {
+export const fetchMoreDataUS = (page) => {
     let response = []
     return (dispatch=>{
         Axios.get("https://api.dev.pastorsline.com/api/contacts.json",
@@ -119,17 +128,42 @@ export const fetchMoreData = (US, page) => {
           params:{
             companyId:171,
             page:page,
-            countryId:US ? 226 : null,
+            countryId:226,
           }
         })
         .then(async (resp)=>{
             console.log(resp)
             if(resp.status === 200) {
-                dispatch(fetchContacts(false, resp.data))
+                dispatch(fetchContactsUS(resp.data))
             }
         })
         .catch((err)=>{
-            console.log("USA data fetching error", err)
+            console.log("USA more data fetching error", err)
+        })
+        console.log(response)
+    })
+}
+export const fetchMoreDataAll = (page) => {
+    let response = []
+    return (dispatch=>{
+        Axios.get("https://api.dev.pastorsline.com/api/contacts.json",
+        {
+          headers: {
+            Authorization: `Bearer ${authKey}`
+          },
+          params:{
+            companyId:171,
+            page:page,
+          }
+        })
+        .then(async (resp)=>{
+            console.log(resp)
+            if(resp.status === 200) {
+                dispatch(fetchContactsAll(resp.data))
+            }
+        })
+        .catch((err)=>{
+            console.log("All more data fetching error", err)
         })
         console.log(response)
     })
